@@ -7,9 +7,12 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "iron-session": "^6.3.1",
     "next": "latest",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.8"
   },
   "devDependencies": {
     "@types/node": "^12.12.21",

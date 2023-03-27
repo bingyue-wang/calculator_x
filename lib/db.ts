@@ -18,6 +18,9 @@ if (!dbName) {
     );
 }
 
+/**
+ * Connect to the database and return a cached connection and database object
+ */
 export async function connectToDatabase() {
     if (cachedClient && cachedDb) {
         return {client: cachedClient, db: cachedDb};

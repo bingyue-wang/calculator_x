@@ -1,9 +1,10 @@
-import { User } from '../interfaces'
+import {User} from '../interfaces'
+import {ObjectId} from 'mongodb';
 
 /** Dummy user data. */
 export const sampleUserData: User[] = [
-  { id: 101, name: 'Alice' },
-  { id: 102, name: 'Bob' },
-  { id: 103, name: 'Caroline' },
-  { id: 104, name: 'Dave' },
+    {_id: new ObjectId('123alice'), username: 'Alice'},
+    {_id: new ObjectId('123bob'), username: 'Bob'},
+    {_id: new ObjectId('123caroline'), username: 'Caroline'},
+    {_id: new ObjectId('123dave'), username: 'Dave'},
 ]

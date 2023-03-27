@@ -4,7 +4,31 @@
 //
 // import { User } from 'path/to/interfaces';
 
+import { ObjectId } from 'mongodb';
+
 export type User = {
-  id: number
-  name: string
+    _id: ObjectId
+    username: string
 }
+
+export interface UserWithPassword extends User {
+    password: string;
+}
+
+export type SignupResponse = {
+    status: 'success';
+    message: string;
+    user: User;
+} | {
+    status: 'error';
+    message: string;
+};
+
+export type LoginResponse = {
+    status: 'success';
+    message: string;
+    user: User;
+} | {
+    status: 'error';
+    message: string;
+};
