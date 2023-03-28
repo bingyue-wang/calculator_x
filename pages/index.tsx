@@ -23,7 +23,7 @@ const IndexPage = ({ user }) => {
         return <div>Loading...</div>;
     }
 
-    return <Layout title="Calculator-x">
+    return <Layout title="Calculator-x" user={user}>
         <Calculator user={user}/>
     </Layout>
 };
