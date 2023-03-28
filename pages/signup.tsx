@@ -43,42 +43,59 @@ const SignupPage = () => {
         }
     };
 
+    const enterAsAnonymous = () => {
+        router.push('/');
+    };
+
     // Render the signup form
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8">
                 <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
                 <AuthForm buttonText="Sign up" onSubmit={onSignup} loading={loading} />
+                <div className="text-center">
+                    <p className="mt-2 text-sm text-gray-600">
+                        Already have an account?{' '}
+                        <a href="/login" className="font-medium text-blue-600 hover:text-blue-500">
+                            Log in
+                        </a>
+                    </p>
+                    <p className="mt-2 text-sm text-gray-600">
+                        Or{' '}
+                        <button
+                          onClick={enterAsAnonymous}
+                          className="font-medium text-blue-600 hover:text-blue-500"
+                        >
+                            enter anonymously
+                        </button>
+                    </p>
+                </div>
             </div>
         </div>
     );
 };
 
-/**
- * This function is called on the server side before the page is rendered.
- * It is used to check if the user is logged in. If the user is logged in, the user is redirected to the home page.
- */
 export const getServerSideProps = withSessionSsr(
-    async function getServerSideProps({ req }) {
+  async function getServerSideProps({ req }) {
 
-        // Get the user from the session
-        const user = req?.session?.user;
+      // Get the user from the session
+      const user = req?.session?.user;
 
-        // If the user is logged in, redirect to the index page
-        if (user) {
-            return {
-                redirect: {
-                    destination: '/',
-                    permanent: false,
-                },
-            };
-        }
+      // If the user is logged in, redirect to the index page
+      if (user) {
+          return {
+              redirect: {
+                  destination: '/',
+                  permanent: false,
+              },
+          };
+      }
 
-        // If the user is not logged in, show the signup page
-        return {
-            props: {},
-        };
-    },
+      // If the user is not logged in, show the signup page
+      return {
+          props: {},
+      };
+  },
 );
 
 export default SignupPage;

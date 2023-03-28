@@ -24,6 +24,12 @@ const Layout = ({
     router.push('/login');
   }, [router]);
 
+  const handleLogin = useCallback(async () => {
+    await fetch('/api/auth/login');
+    router.push('/login');
+  }
+  , [router]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Head>
@@ -51,12 +57,21 @@ const Layout = ({
               <span>Users List</span>
             </Link>
             <a href="/api/users">Users API</a>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 px-4 py-2 rounded shadow"
-            >
-              Logout
-            </button>
+            {user ? (
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 px-4 py-2 rounded shadow"
+                >
+                  Logout
+                </button>
+              ) :
+              <button
+                onClick={handleLogin}
+                className="bg-red-500 px-4 py-2 rounded shadow"
+              >
+                Login
+              </button>
+            }
           </div>
         </nav>
       </header>

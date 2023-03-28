@@ -35,6 +35,10 @@ const LoginPage = () => {
         }
     }
 
+    const enterAsAnonymous = () => {
+        router.push('/');
+    };
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8">
@@ -47,37 +51,42 @@ const LoginPage = () => {
                             Sign up
                         </a>
                     </p>
+                    <p className="mt-2 text-sm text-gray-600">
+                        Or{' '}
+                        <button
+                          onClick={enterAsAnonymous}
+                          className="font-medium text-blue-600 hover:text-blue-500"
+                        >
+                            enter anonymously
+                        </button>
+                    </p>
                 </div>
             </div>
         </div>
     );
 }
 
-/**
- * This function is called on the server side before the page is rendered.
- * It is used to check if the user is logged in. If the user is logged in, the user is redirected to the home page.
- */
 export const getServerSideProps = withSessionSsr(
-    async function getServerSideProps({req}) {
+  async function getServerSideProps({ req }) {
 
-        // Get the user from the session
-        const user = req?.session?.user;
+      // Get the user from the session
+      const user = req?.session?.user;
 
-        // If the user is logged in, redirect to the index page
-        if (user) {
-            return {
-                redirect: {
-                    destination: '/',
-                    permanent: false,
-                },
-            };
-        }
+      // If the user is logged in, redirect to the index page
+      if (user) {
+          return {
+              redirect: {
+                  destination: '/',
+                  permanent: false,
+              },
+          };
+      }
 
-        // If the user is not logged in, show the login page
-        return {
-            props: {},
-        };
-    },
+      // If the user is not logged in, show the login page
+      return {
+          props: { user: user || null },
+      };
+  },
 );
 
 export default LoginPage;
