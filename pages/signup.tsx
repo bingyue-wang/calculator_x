@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import AuthForm from '../components/Auth/AuthForm';
 import { useRouter } from 'next/router';
+import {withSessionSsr} from "../lib/withSession";
 
 /**
  * Signup page component that renders the signup form and handles the signup logic.
@@ -52,5 +53,32 @@ const SignupPage = () => {
         </div>
     );
 };
+
+/**
+ * This function is called on the server side before the page is rendered.
+ * It is used to check if the user is logged in. If the user is logged in, the user is redirected to the home page.
+ */
+export const getServerSideProps = withSessionSsr(
+    async function getServerSideProps({ req }) {
+
+        // Get the user from the session
+        const user = req?.session?.user;
+
+        // If the user is logged in, redirect to the index page
+        if (user) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                },
+            };
+        }
+
+        // If the user is not logged in, show the signup page
+        return {
+            props: {},
+        };
+    },
+);
 
 export default SignupPage;

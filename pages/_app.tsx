@@ -10,13 +10,12 @@ function App({Component, pageProps}) {
     useEffect(() => {
         const logCurrentPath = async () => {
             console.log('>>: ',router.pathname);
-
         };
 
         logCurrentPath();
     }, [router.pathname]);
 
-    return <Component {...pageProps} />;
+    return <Component {...pageProps} />
 }
 
 export default App;
