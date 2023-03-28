@@ -3,8 +3,13 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Calculator from '../components/Calculator/Calculator';
 import {withSessionSsr} from '../lib/withSession';
+import Layout from "../components/Layout";
 
-
+/**
+ * Index page component that renders the calculator.
+ * @param user
+ * @constructor
+ */
 const IndexPage = ({ user }) => {
     const router = useRouter();
 
@@ -18,7 +23,9 @@ const IndexPage = ({ user }) => {
         return <div>Loading...</div>;
     }
 
-    return <Calculator user={user}/>;
+    return <Layout title="Calculator-x">
+        <Calculator user={user}/>
+    </Layout>
 };
 
 /**

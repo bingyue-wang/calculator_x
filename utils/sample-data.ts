@@ -1,10 +1,9 @@
-import {User} from '../interfaces'
-import {ObjectId} from 'mongodb';
+import {UserTest} from '../interfaces'
 
 /** Dummy user data. */
-export const sampleUserData: User[] = [
-    {_id: new ObjectId('123alice'), username: 'Alice'},
-    {_id: new ObjectId('123bob'), username: 'Bob'},
-    {_id: new ObjectId('123caroline'), username: 'Caroline'},
-    {_id: new ObjectId('123dave'), username: 'Dave'},
+export const sampleUserData: UserTest[] = [
+    {_id: 123, username: 'alice'},
+    {_id: 124, username: 'bob'},
+    {_id: 125, username: 'caroline'},
+    {_id: 126, username: 'dave'},
 ]

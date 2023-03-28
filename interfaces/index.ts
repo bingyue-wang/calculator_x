@@ -4,10 +4,14 @@
 //
 // import { User } from 'path/to/interfaces';
 
-import { ObjectId } from 'mongodb';
+import {ObjectId} from 'mongodb';
 
 export type User = {
     _id: ObjectId
+    username: string
+}
+export type UserTest = {
+    _id: number
     username: string
 }
 
