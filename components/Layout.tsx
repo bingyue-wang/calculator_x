@@ -2,6 +2,8 @@ import React, {ReactNode, useCallback} from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
+import ThemeSwitcher from './ThemeSwitcher';
+import {useTheme} from '../context/ThemeContext';
 
 type Props = {
   children?: ReactNode
@@ -18,6 +20,10 @@ const Layout = ({
                   user
                 }: Props) => {
   const router = useRouter();
+  const {theme} = useTheme();
+
+  const headerClassName = theme === 'light' ? 'bg-blue-500' : 'bg-gray-800';
+
 
   const handleLogout = useCallback(async () => {
     await fetch('/api/auth/logout');
@@ -25,10 +31,10 @@ const Layout = ({
   }, [router]);
 
   const handleLogin = useCallback(async () => {
-    await fetch('/api/auth/login');
-    router.push('/login');
-  }
-  , [router]);
+      await fetch('/api/auth/login');
+      router.push('/login');
+    }
+    , [router]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -37,7 +43,7 @@ const Layout = ({
         <meta charSet="utf-8"/>
         <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
       </Head>
-      <header className="bg-gray-800 text-white py-4">
+      <header className={`${headerClassName} text-white py-4`}>
         <nav className="container mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <Link href="/">
@@ -72,6 +78,7 @@ const Layout = ({
                 Login
               </button>
             }
+            <ThemeSwitcher/>
           </div>
         </nav>
       </header>
