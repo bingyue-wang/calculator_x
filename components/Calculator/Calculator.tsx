@@ -3,7 +3,7 @@ import Decimal from 'decimal.js';
 
 const Calculator = () => {
   const [input, setInput] = useState('0');
-  const [memory, setMemory] = useState(null);
+  const [memory, setMemory] = useState(0);
   const [history, setHistory] = useState([]);
 
   const numbers = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0'];
@@ -24,6 +24,16 @@ const Calculator = () => {
     }
     // Don't allow two 'mod' operators consecutively
     if (value === 'mod' && input.slice(-3) === 'mod') {
+      return;
+    }
+
+    // Toggle sign when "±" button is clicked
+    if (value === '±') {
+      if (input[0] === '-') {
+        setInput(input.slice(1));
+      } else {
+        setInput('-' + input);
+      }
       return;
     }
 
@@ -51,7 +61,7 @@ const Calculator = () => {
       setInput(result.toString());
 
       // Save to history
-      setHistory([...history, { input: input, result: result.toString() }]);
+      setHistory([...history, {input: input, result: result.toString()}]);
 
     } catch (error) {
       setInput('Error');
@@ -64,6 +74,19 @@ const Calculator = () => {
       .replace(/(\d\.)+(\d)/g, '$1$2')
       .split(/([+\-*/()^√%]|mod)/g) // Add √ and % to the regex pattern
       .filter((token) => token);
+
+    // Handle negative numbers
+    tokens = tokens.reduce((acc, token, index) => {
+      if (token === '-' && (index === 0 || '+-*/^%mod√('.includes(tokens[index - 1]))) {
+        acc.push(token + tokens[index + 1]);
+        return acc;
+      } else if (index > 0 && tokens[index - 1] === '-') {
+        return acc;
+      }
+
+      acc.push(token);
+      return acc;
+    }, []);
 
     // Handle implied multiplication
     tokens = tokens.reduce((acc, token, index) => {
@@ -184,12 +207,18 @@ const Calculator = () => {
 
   const memoryRecall = () => {
     if (memory !== null) {
-      setInput(memory.toString());
+      const lastChar = input[input.length - 1];
+      const isLastCharOperator = operations.includes(lastChar) || advancedOperations.includes(lastChar);
+
+      if (isLastCharOperator) {
+        setInput(input + memory.toString());
+      }
     }
   };
 
+
   const memoryClear = () => {
-    setMemory(null);
+    setMemory(0);
   };
 
   const handleDecimal = () => {
@@ -202,7 +231,14 @@ const Calculator = () => {
   // The return part of the component is provided in the previous answer.
   return (
     <div className="flex">
-      <div className="calculator bg-gray-100 p-4 rounded-lg shadow-md">
+      <div className="memory ml-4 w-32 mr-2">
+        <h2 className="text-xl font-bold mb-2">Memory</h2>
+        <div
+          className="bg-white p-2 rounded-lg shadow-md divide-y divide-gray-300">
+          <div className="text-sm font-bold">{memory}</div>
+        </div>
+      </div>
+      <div className="calculator bg-gray-100 p-4 rounded-lg shadow-md w-full">
         <div className="display mb-4">
           <input
             type="text"
@@ -253,6 +289,12 @@ const Calculator = () => {
               className="bg-gray-200 text-black font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
             >
               .
+            </button>
+            <button
+              onClick={() => handleInput('±')}
+              className="bg-gray-200 text-black font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+            >
+              ±
             </button>
           </div>
           <div
@@ -311,11 +353,11 @@ const Calculator = () => {
             </div>
           </div>
         </div>
-
       </div>
       <div className="history ml-4 w-64">
         <h2 className="text-xl font-bold mb-2">History</h2>
-        <ul className="bg-white p-2 rounded-lg shadow-md divide-y divide-gray-300">
+        <ul
+          className="bg-white p-2 rounded-lg shadow-md divide-y divide-gray-300">
           {history.map((entry, index) => (
             <li
               key={index}
