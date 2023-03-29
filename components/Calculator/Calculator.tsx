@@ -40,6 +40,8 @@ const Calculator = () => {
     // Replace the last operator with the new one
     if (input === '0' && !isValueOperator) {
       setInput(value);
+    } else if (value === '√' || value === '%') {
+      setInput(value);
     } else {
       setInput(input + value);
     }
