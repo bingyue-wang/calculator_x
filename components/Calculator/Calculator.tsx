@@ -4,6 +4,7 @@ import Decimal from 'decimal.js';
 const Calculator = () => {
   const [input, setInput] = useState('0');
   const [memory, setMemory] = useState(null);
+  const [history, setHistory] = useState([]);
 
   const numbers = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0'];
   const operations = ['+', '-', '×', '÷'];
@@ -34,7 +35,9 @@ const Calculator = () => {
     }
   };
 
-
+  const handleHistoryClick = (expression) => {
+    setInput(expression);
+  };
 
   const calculateResult = () => {
     try {
@@ -46,6 +49,10 @@ const Calculator = () => {
       // Wrap expression with custom evaluation function
       const result = evaluate(expression);
       setInput(result.toString());
+
+      // Save to history
+      setHistory([...history, { input: input, result: result.toString() }]);
+
     } catch (error) {
       setInput('Error');
     }
@@ -194,115 +201,132 @@ const Calculator = () => {
 
   // The return part of the component is provided in the previous answer.
   return (
-    <div className="calculator bg-gray-100 p-4 rounded-lg shadow-md">
-      <div className="display mb-4">
-        <input
-          type="text"
-          value={input}
-          readOnly
-          className="w-full p-2 rounded-lg text-right bg-white text-black border border-gray-300"
-        />
-      </div>
-      <div className="buttons grid grid-cols-4 gap-2">
-        <div className="memory-operations col-span-4 grid grid-cols-4 gap-2">
-          <button
-            onClick={memoryRecall}
-            className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
-          >
-            MR
-          </button>
-          <button
-            onClick={memoryClear}
-            className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
-          >
-            MC
-          </button>
-          <button
-            onClick={memoryAdd}
-            className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
-          >
-            M+
-          </button>
-          <button
-            onClick={memorySubtract}
-            className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
-          >
-            M-
-          </button>
+    <div className="flex">
+      <div className="calculator bg-gray-100 p-4 rounded-lg shadow-md">
+        <div className="display mb-4">
+          <input
+            type="text"
+            value={input}
+            readOnly
+            className="w-full p-2 rounded-lg text-right bg-white text-black border border-gray-300"
+          />
         </div>
-        <div className="number-buttons col-span-3 grid grid-cols-3 gap-2">
-          {numbers.map((num, idx) => (
+        <div className="buttons grid grid-cols-4 gap-2">
+          <div className="memory-operations col-span-4 grid grid-cols-4 gap-2">
             <button
-              key={idx}
-              onClick={() => handleInput(num)}
+              onClick={memoryRecall}
+              className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            >
+              MR
+            </button>
+            <button
+              onClick={memoryClear}
+              className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            >
+              MC
+            </button>
+            <button
+              onClick={memoryAdd}
+              className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            >
+              M+
+            </button>
+            <button
+              onClick={memorySubtract}
+              className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+            >
+              M-
+            </button>
+          </div>
+          <div className="number-buttons col-span-3 grid grid-cols-3 gap-2">
+            {numbers.map((num, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleInput(num)}
+                className="bg-gray-200 text-black font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+              >
+                {num}
+              </button>
+            ))}
+            <button
+              onClick={handleDecimal}
               className="bg-gray-200 text-black font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
             >
-              {num}
-            </button>
-          ))}
-          <button
-            onClick={handleDecimal}
-            className="bg-gray-200 text-black font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
-          >
-            .
-          </button>
-        </div>
-        <div
-          className="operation-buttons col-span-1 grid grid-cols-2 grid-rows-3 gap-2">
-          <div className="col-span-2">
-            <button
-              onClick={clearInput}
-              className="w-full bg-red-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
-            >
-              C
+              .
             </button>
           </div>
-          <button
-            onClick={() => handleInput(advancedOperations[0])}
-            className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-          >
-            {advancedOperations[0]}
-          </button>
-
-          <button
-            onClick={() => handleInput(advancedOperations[1])}
-            className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-          >
-            {advancedOperations[1]}
-          </button>
-
-          <button
-            onClick={() => handleInput(advancedOperations[2])}
-            className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-          >
-            {advancedOperations[2]}
-          </button>
-
-          <button
-            onClick={() => handleInput(advancedOperations[3])}
-            className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-          >
-            {advancedOperations[3]}
-          </button>
-          {operations.map((op, idx) => (
+          <div
+            className="operation-buttons col-span-1 grid grid-cols-2 grid-rows-3 gap-2">
+            <div className="col-span-2">
+              <button
+                onClick={clearInput}
+                className="w-full bg-red-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
+              >
+                C
+              </button>
+            </div>
             <button
-              key={idx}
-              onClick={() => handleInput(op)}
+              onClick={() => handleInput(advancedOperations[0])}
               className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
-              {op}
+              {advancedOperations[0]}
             </button>
-          ))}
-          <div className="col-span-2">
+
             <button
-              onClick={calculateResult}
-              className="w-full bg-green-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300"
+              onClick={() => handleInput(advancedOperations[1])}
+              className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
-              =
+              {advancedOperations[1]}
             </button>
+
+            <button
+              onClick={() => handleInput(advancedOperations[2])}
+              className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+            >
+              {advancedOperations[2]}
+            </button>
+
+            <button
+              onClick={() => handleInput(advancedOperations[3])}
+              className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+            >
+              {advancedOperations[3]}
+            </button>
+            {operations.map((op, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleInput(op)}
+                className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+              >
+                {op}
+              </button>
+            ))}
+            <div className="col-span-2">
+              <button
+                onClick={calculateResult}
+                className="w-full bg-green-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300"
+              >
+                =
+              </button>
+            </div>
           </div>
         </div>
 
+      </div>
+      <div className="history ml-4 w-64">
+        <h2 className="text-xl font-bold mb-2">History</h2>
+        <ul className="bg-white p-2 rounded-lg shadow-md divide-y divide-gray-300">
+          {history.map((entry, index) => (
+            <li
+              key={index}
+              className="p-2 cursor-pointer hover:bg-gray-100"
+              onClick={() => handleHistoryClick(entry.input)}
+            >
+              <div className="text-sm">{entry.input}</div>
+              <div className="text-sm font-bold">{entry.result}</div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
