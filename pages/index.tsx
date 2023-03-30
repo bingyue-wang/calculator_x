@@ -19,16 +19,18 @@ const IndexPage = ({user}) => {
             <div>
               <h2 className="text-2xl font-bold mb-4">Hi {user.username}!</h2>
               <div className="mb-4">
-                You are logged in, enjoy your full access to the calculator app! your
-                calculation history will be save in database.
+                You are logged in :)
+                <br/>Enjoy your full access to the calculator app!
+                <br/>Your calculation history will be saved in a database.
               </div>
             </div>
           ) : (
             <div>
               <h2 className="text-2xl font-bold mb-4">Hi Anonymous User!</h2>
               <div className="mb-4">
-                You are not logged in, you can use the calculator without saving your
-                history to database.
+                You are not logged in.
+                <br/>You can use the calculator without saving your
+                history to a database.
               </div>
             </div>
           )}
