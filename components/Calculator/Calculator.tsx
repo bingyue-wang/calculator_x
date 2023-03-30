@@ -51,13 +51,19 @@ const Calculator = ({user}) => {
 
     // Toggle sign when "±" button is clicked
     if (value === '±') {
-      if (input[0] === '-') {
-        setInput(input.slice(1));
-      } else {
-        setInput('-' + input);
+      const lastNumberRegex = /(\d+(\.\d+)?|\.\d+)$/;
+      const match = input.match(lastNumberRegex);
+
+      if (match) {
+        const lastIndex = match.index;
+        const lastNumber = match[0];
+        const newNumber = lastNumber[0] === '-' ? lastNumber.slice(1) : `(-${lastNumber})`;
+        setInput(input.slice(0, lastIndex) + newNumber);
       }
       return;
     }
+
+
 
     // Replace the last operator with the new one
     if (input === '0' && !isValueOperator) {
@@ -147,7 +153,7 @@ const Calculator = ({user}) => {
     let tokens = expression
       .replace(/\s+/g, '')
       .replace(/(\d\.)+(\d)/g, '$1$2')
-      .split(/([+\-*/()^√%]|mod)/g) // Add √ and % to the regex pattern
+      .split(/([+\-*/()^√%]|mod)/g)
       .filter((token) => token);
 
     // Handle negative numbers
@@ -293,12 +299,17 @@ const Calculator = ({user}) => {
   };
 
 
+  const parseInputAsNumber = (input) => {
+    const match = input.match(/\((-?\d+(\.\d+)?)\)/);
+    return match ? parseFloat(match[1]) : parseFloat(input);
+  };
+
   const memoryAdd = () => {
-    setMemory(memory === null ? parseFloat(input) : memory + parseFloat(input));
+    setMemory(memory === null ? parseInputAsNumber(input) : memory + parseInputAsNumber(input));
   };
 
   const memorySubtract = () => {
-    setMemory(memory === null ? parseFloat(input) : memory - parseFloat(input));
+    setMemory(memory === null ? parseInputAsNumber(input) : memory - parseInputAsNumber(input));
   };
 
   const memoryRecall = () => {
@@ -307,10 +318,12 @@ const Calculator = ({user}) => {
       const isLastCharOperator = operations.includes(lastChar) || advancedOperations.includes(lastChar);
 
       if (isLastCharOperator) {
-        setInput(input + memory.toString());
+        const memoryString = memory < 0 ? `(${memory})` : memory.toString();
+        setInput(input + memoryString);
       }
     }
   };
+
 
 
   const memoryClear = () => {
