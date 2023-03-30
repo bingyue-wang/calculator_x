@@ -49,11 +49,9 @@ const Layout = ({
             <Link href="/">
               <span className="text-xl font-bold">Home</span>
             </Link>
-            {user && (
-              <span className="text-gray-300">
-                Welcome, {user.username}
-              </span>
-            )}
+            <span className="text-gray-300">
+                Welcome, {user ? user.username : 'Anonymous'}
+            </span>
           </div>
           <div className="flex space-x-4 items-center">
             <Link href="/about">
