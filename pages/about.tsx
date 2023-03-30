@@ -118,23 +118,14 @@ const AboutPage = ({user}) => (
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({req}) {
-
     // Get the user from the session
     const user = req?.session?.user;
 
-    if (!user) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
-
+    // Pass the user object to the About component
     return {
-      props: {user},
+      props: {user: user || null},
     };
-  },
+  }
 );
 
 export default AboutPage;
