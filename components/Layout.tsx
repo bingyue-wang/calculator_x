@@ -60,7 +60,6 @@ const Layout = ({
             <Link href="/users">
               <span>Users List</span>
             </Link>
-            <a href="/api/users">Users API</a>
             {user ? (
                 <button
                   onClick={handleLogout}
