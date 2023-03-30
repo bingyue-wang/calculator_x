@@ -153,13 +153,15 @@ const Calculator = ({user}) => {
     // Handle negative numbers
     tokens = tokens.reduce((acc, token, index) => {
       if (token === '-' && (index === 0 || '+-*/^%mod√('.includes(tokens[index - 1]))) {
+        // Handle unary minus (negative numbers)
         acc.push(token + tokens[index + 1]);
+      } else if (index > 0 && tokens[index - 1] === '-' && (tokens[index - 2] === undefined || '+-*/^%mod√('.includes(tokens[index - 2]))) {
+        // Skip the number after unary minus, as it's already combined
         return acc;
-      } else if (index > 0 && tokens[index - 1] === '-') {
-        return acc;
+      } else {
+        // Handle other tokens
+        acc.push(token);
       }
-
-      acc.push(token);
       return acc;
     }, []);
 
@@ -203,6 +205,8 @@ const Calculator = ({user}) => {
     while (operators.length > 0) {
       output.push(operators.pop());
     }
+
+    console.log('[Debugger_], output ', output);
 
     const stack = [];
     output.forEach((token) => {
