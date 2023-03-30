@@ -23,6 +23,8 @@ const Layout = ({
   const {theme} = useTheme();
 
   const headerClassName = theme === 'light' ? 'bg-blue-500' : 'bg-gray-800';
+  const footerClassName = theme === 'light' ? 'bg-blue-500' : 'bg-gray-800';
+  const bodyClassName = theme === 'light' ? 'bg-blue-100' : 'bg-gray-400';
 
 
   const handleLogout = useCallback(async () => {
@@ -79,8 +81,8 @@ const Layout = ({
           </div>
         </nav>
       </header>
-      <main className="flex-grow container mx-auto py-8 px-4">{children}</main>
-      <footer className="bg-gray-800 text-white py-4">
+      <main className={`${bodyClassName} flex justify-center flex-grow container min-w-full py-8 px-4`}>{children}</main>
+      <footer className={`${footerClassName} text-white py-4`}>
         <div className="container mx-auto text-center">
           <span>❤️ Best Calculator App Designed Just For You ❤️</span>
         </div>
