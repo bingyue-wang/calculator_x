@@ -73,6 +73,11 @@ const Calculator = ({user}) => {
   };
 
   const deleteHistory = async (id) => {
+    if (!user) {
+      setHistory(history.filter((item) => item._id !== id));
+      return;
+    }
+
     try {
       const response = await fetch('/api/history', {
         method: 'DELETE',
@@ -266,6 +271,23 @@ const Calculator = ({user}) => {
     setInput('0');
   };
 
+  const clearChar = () => {
+    if (input.length === 1 || (input.length === 2 && input[0] === '-')) {
+      setInput('0');
+    } else if (input.slice(-3) === 'mod') {
+      setInput(input.slice(0, -3));
+    } else {
+      const lastChar = input[input.length - 1];
+      const isLastCharOperator = operations.includes(lastChar) || advancedOperations.includes(lastChar);
+      if (isLastCharOperator) {
+        setInput(input.slice(0, -1));
+      } else {
+        setInput(input.slice(0, -1));
+      }
+    }
+  };
+
+
   const memoryAdd = () => {
     setMemory(memory === null ? parseFloat(input) : memory + parseFloat(input));
   };
@@ -369,14 +391,18 @@ const Calculator = ({user}) => {
           </div>
           <div
             className="operation-buttons col-span-1 grid grid-cols-2 grid-rows-3 gap-2">
-            <div className="col-span-2">
-              <button
-                onClick={clearInput}
-                className="w-full bg-red-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
-              >
-                C
-              </button>
-            </div>
+            <button
+              onClick={clearInput}
+              className="w-full bg-red-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
+            >
+              C
+            </button>
+            <button
+              onClick={clearChar}
+              className="w-full bg-red-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
+            >
+              DEL
+            </button>
             <button
               onClick={() => handleInput(advancedOperations[0])}
               className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
