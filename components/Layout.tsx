@@ -44,8 +44,8 @@ const Layout = ({
         <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
       </Head>
       <header className={`${headerClassName} text-white py-4`}>
-        <nav className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-4">
+        <nav className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+          <div className="flex items-center space-x-4 justify-center md:justify-start">
             <Link href="/">
               <span className="text-xl font-bold">Home</span>
             </Link>
@@ -53,7 +53,7 @@ const Layout = ({
                 Welcome, {user ? user.username : 'Anonymous'}
             </span>
           </div>
-          <div className="flex space-x-4 items-center">
+          <div className="flex space-x-4 items-center justify-center md:justify-end">
             <Link href="/about">
               <span>About</span>
             </Link>
