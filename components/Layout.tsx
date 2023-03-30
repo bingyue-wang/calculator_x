@@ -57,10 +57,7 @@ const Layout = ({
           </div>
           <div className="flex space-x-4 items-center justify-center md:justify-end">
             <Link href="/about">
-              <span>About</span>
-            </Link>
-            <Link href="/users">
-              <span>Users List</span>
+              <span>Design Docs</span>
             </Link>
             {user ? (
                 <button
