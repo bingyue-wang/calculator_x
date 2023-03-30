@@ -56,6 +56,9 @@ const Layout = ({
             </span>
           </div>
           <div className="flex space-x-4 items-center justify-center md:justify-end">
+            <Link href="/calculator">
+              <span>Calculator</span>
+            </Link>
             <Link href="/about">
               <span>Design Docs</span>
             </Link>

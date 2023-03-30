@@ -339,175 +339,203 @@ const Calculator = ({user}) => {
 
   // The return part of the component is provided in the previous answer.
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="calculator">
-        <div className="memory ml-4 w-32 mr-2 mb-4">
-          <h2 className="text-xl font-bold mb-2">Memory</h2>
-          <div
-            className="bg-amber-300 p-2 rounded-lg shadow-md divide-y divide-gray-300">
-            <div className="text-sm font-bold overflow-scroll">{memory}</div>
-          </div>
-        </div>
-        <div className="panel min-w-fit w-full">
-          <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-            <div className="display mb-4">
-              <input
-                type="text"
-                value={input}
-                readOnly
-                className="w-full p-2 rounded-lg text-right bg-white text-black border border-gray-300"
-              />
+    <div className="flex flex-col justify-between">
+      <div className="flex flex-col md:flex-row">
+        <div className="calculator">
+          <div className="memory ml-4 w-32 mr-2 mb-4">
+            <h2 className="text-xl font-bold mb-2">Memory</h2>
+            <div
+              className="bg-amber-300 p-2 rounded-lg shadow-md divide-y divide-gray-300">
+              <div className="text-sm font-bold overflow-scroll">{memory}</div>
             </div>
-            <div className="buttons grid grid-cols-4 gap-2">
-              <div className="memory-operations col-span-4 grid grid-cols-4 gap-2">
-                <button
-                  onClick={memoryRecall}
-                  className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
-                >
-                  MR
-                </button>
-                <button
-                  onClick={memoryClear}
-                  className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
-                >
-                  MC
-                </button>
-                <button
-                  onClick={memoryAdd}
-                  className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
-                >
-                  M+
-                </button>
-                <button
-                  onClick={memorySubtract}
-                  className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
-                >
-                  M-
-                </button>
+          </div>
+          <div className="panel min-w-fit w-full">
+            <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+              <div className="display mb-4">
+                <input
+                  type="text"
+                  value={input}
+                  readOnly
+                  className="w-full p-2 rounded-lg text-right bg-white text-black border border-gray-300"
+                />
               </div>
-              <div className="number-buttons col-span-3 grid grid-cols-3 gap-2">
-                {numbers.map((num, idx) => (
+              <div className="buttons grid grid-cols-4 gap-2">
+                <div
+                  className="memory-operations col-span-4 grid grid-cols-4 gap-2">
                   <button
-                    key={idx}
-                    onClick={() => handleInput(num)}
+                    onClick={memoryRecall}
+                    className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                  >
+                    MR
+                  </button>
+                  <button
+                    onClick={memoryClear}
+                    className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                  >
+                    MC
+                  </button>
+                  <button
+                    onClick={memoryAdd}
+                    className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                  >
+                    M+
+                  </button>
+                  <button
+                    onClick={memorySubtract}
+                    className="bg-yellow-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                  >
+                    M-
+                  </button>
+                </div>
+                <div
+                  className="number-buttons col-span-3 grid grid-cols-3 gap-2">
+                  {numbers.map((num, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleInput(num)}
+                      className="bg-gray-200 text-black font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    >
+                      {num}
+                    </button>
+                  ))}
+                  <button
+                    onClick={handleDecimal}
                     className="bg-gray-200 text-black font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
                   >
-                    {num}
+                    .
                   </button>
-                ))}
-                <button
-                  onClick={handleDecimal}
-                  className="bg-gray-200 text-black font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
-                >
-                  .
-                </button>
-                <button
-                  onClick={() => handleInput('±')}
-                  className="bg-gray-200 text-black font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
-                >
-                  ±
-                </button>
-              </div>
-              <div
-                className="operation-buttons col-span-1 grid grid-cols-2 grid-rows-3 gap-2">
-                <button
-                  onClick={clearInput}
-                  className="w-full bg-red-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
-                >
-                  C
-                </button>
-                <button
-                  onClick={clearChar}
-                  className="w-full bg-red-500 text-[0.5rem] sm:text-base text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
-                >
-                  DEL
-                </button>
-                <button
-                  onClick={() => handleInput(advancedOperations[0])}
-                  className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                  {advancedOperations[0]}
-                </button>
-
-                <button
-                  onClick={() => handleInput(advancedOperations[1])}
-                  className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                  {advancedOperations[1]}
-                </button>
-
-                <button
-                  onClick={() => handleInput(advancedOperations[2])}
-                  className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                  {advancedOperations[2]}
-                </button>
-
-                <button
-                  onClick={() => handleInput(advancedOperations[3])}
-                  className="bg-blue-500 text-[0.5rem] sm:text-base text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
-                  {advancedOperations[3]}
-                </button>
-                {operations.map((op, idx) => (
                   <button
-                    key={idx}
-                    onClick={() => handleInput(op)}
+                    onClick={() => handleInput('±')}
+                    className="bg-gray-200 text-black font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  >
+                    ±
+                  </button>
+                </div>
+                <div
+                  className="operation-buttons col-span-1 grid grid-cols-2 grid-rows-3 gap-2">
+                  <button
+                    onClick={clearInput}
+                    className="w-full bg-red-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
+                  >
+                    C
+                  </button>
+                  <button
+                    onClick={clearChar}
+                    className="w-full bg-red-500 text-[0.5rem] sm:text-base text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
+                  >
+                    DEL
+                  </button>
+                  <button
+                    onClick={() => handleInput(advancedOperations[0])}
                     className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                   >
-                    {op}
+                    {advancedOperations[0]}
                   </button>
-                ))}
-                <div className="col-span-2">
+
                   <button
-                    onClick={calculateResult}
-                    className="w-full bg-green-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300"
+                    onClick={() => handleInput(advancedOperations[1])}
+                    className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
                   >
-                    =
+                    {advancedOperations[1]}
                   </button>
+
+                  <button
+                    onClick={() => handleInput(advancedOperations[2])}
+                    className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  >
+                    {advancedOperations[2]}
+                  </button>
+
+                  <button
+                    onClick={() => handleInput(advancedOperations[3])}
+                    className="bg-blue-500 text-[0.5rem] sm:text-base text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  >
+                    {advancedOperations[3]}
+                  </button>
+                  {operations.map((op, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleInput(op)}
+                      className="bg-blue-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    >
+                      {op}
+                    </button>
+                  ))}
+                  <div className="col-span-2">
+                    <button
+                      onClick={calculateResult}
+                      className="w-full bg-green-500 text-white font-bold p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300"
+                    >
+                      =
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="history ml-4 w-64 mt-4 md:mt-0">
-        <h2 className="text-xl font-bold mb-2">History</h2>
-        <ul
-          className="bg-amber-100 p-2 rounded-lg shadow-2xl divide-y divide-gray-300 min-h-[100px] max-h-[500px] overflow-y-auto">
-          {history.map((entry, index) => (
-            <div className="flex justify-between items-center p-2" key={index}>
-              <div className="text-sm">
-                <div className="font-bold mb-1">
-                  Entry {index + 1}
+        <div className="history ml-4 w-64 mt-4 md:mt-0">
+          <h2 className="text-xl font-bold mb-2">History</h2>
+          <ul
+            className="bg-amber-100 p-2 rounded-lg shadow-2xl divide-y divide-gray-300 min-h-[100px] max-h-[500px] overflow-y-auto">
+            {history.map((entry, index) => (
+              <div className="flex justify-between items-center p-2"
+                   key={index}>
+                <div className="text-sm">
+                  <div className="font-bold mb-1 text-blue-400">
+                    Entry {index + 1}
+                  </div>
+                  <div
+                    className="overflow-scroll whitespace-nowrap text-overflow-ellipsis min-w-[200px] max-w-[200px]">
+                    {entry.input}
+                  </div>
+                  <div
+                    className="text-sm font-bold overflow-scroll whitespace-nowrap text-overflow-ellipsis min-w-[200px] max-w-[200px]">
+                    ={entry.result}
+                  </div>
                 </div>
-                <div
-                  className="overflow-scroll whitespace-nowrap text-overflow-ellipsis min-w-[200px] max-w-[200px]">
-                  {entry.input}
-                </div>
-                <div
-                  className="text-sm font-bold overflow-scroll whitespace-nowrap text-overflow-ellipsis min-w-[200px] max-w-[200px]">
-                  ={entry.result}
+                <div className="flex flex-col">
+                  <button
+                    className="p-1 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300 mb-1"
+                    onClick={() => handleHistoryClick(entry.input)}
+                  >
+                    <AiOutlineRollback/>
+                  </button>
+                  <button
+                    className="p-1 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    onClick={() => deleteHistory(entry._id)}
+                  >
+                    <AiOutlineDelete/>
+                  </button>
                 </div>
               </div>
-              <div className="flex flex-col">
-                <button
-                  className="p-1 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300 mb-1"
-                  onClick={() => handleHistoryClick(entry.input)}
-                >
-                  <AiOutlineRollback/>
-                </button>
-                <button
-                  className="p-1 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
-                  onClick={() => deleteHistory(entry._id)}
-                >
-                  <AiOutlineDelete/>
-                </button>
-              </div>
-            </div>
-          ))}
-        </ul>
+            ))}
+          </ul>
+        </div>
       </div>
+      <div className="notes text-gray-700">
+        <div className="font-bold">Note:</div>
+        <p className="mb-2">
+          To use the % operation, you can enter the first number, then click on the <span className="text-green-500 font-semibold">%</span> button, and then enter the second number.
+        </p>
+        <div className="bg-green-100 rounded p-2 mt-4">
+          <p className="text-gray-600">
+            <span className="font-semibold">20% of 100:</span> Enter "100", click on the <span className="text-green-500 font-semibold">%</span> button, enter "20", and then click on the "=" button. The result will be "20".
+          </p>
+        </div>
+        <p>
+          To use the square root <span className="text-green-500 font-semibold">√</span> operation, you can enter the <span className="text-green-500 font-semibold">√</span> and then the number you want to find the square root of.
+        </p>
+        <div className="bg-green-100 rounded p-2 mt-4">
+          <p className="text-gray-600">
+            <span className="font-semibold">Square root of 16:</span> Enter <span className="text-green-500 font-semibold">√</span>, enter "16", and then click on the "=" button. The result will be "4".
+          </p>
+        </div>
+      </div>
+
+
+
+
     </div>
   );
 
