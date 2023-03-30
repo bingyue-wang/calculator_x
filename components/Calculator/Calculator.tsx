@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Decimal from 'decimal.js';
+import {AiOutlineDelete, AiOutlineRollback} from 'react-icons/ai';
 
 const Calculator = ({user}) => {
   const [input, setInput] = useState('0');
@@ -453,18 +454,33 @@ const Calculator = ({user}) => {
       <div className="history ml-4 w-64">
         <h2 className="text-xl font-bold mb-2">History</h2>
         <ul
-          className="bg-white p-2 rounded-lg shadow-md divide-y divide-gray-300">
+          className="bg-white p-2 rounded-lg shadow-md divide-y divide-gray-300 min-h-[100px] max-h-[500px] overflow-y-auto">
           {history.map((entry, index) => (
-            <div className="flex-col justify-end" key={index}>
-              <div
-                key={index}
-                className="p-2 cursor-pointer hover:bg-gray-100"
-                onClick={() => handleHistoryClick(entry.input)}
-              >
-                <div className="text-sm">{entry.input}</div>
-                <div className="text-sm font-bold">={entry.result}</div>
+            <div className="flex justify-between items-center p-2" key={index}>
+              <div className="text-sm">
+                <div
+                  className="overflow-scroll whitespace-nowrap text-overflow-ellipsis max-w-[200px]">
+                  {entry.input}
+                </div>
+                <div
+                  className="text-sm font-bold overflow-scroll whitespace-nowrap text-overflow-ellipsis max-w-[200px]">
+                  ={entry.result}
+                </div>
               </div>
-              <button onClick={() => deleteHistory(entry._id)}>Delete</button>
+              <div className="flex flex-col">
+                <button
+                  className="p-1 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300 mb-1"
+                  onClick={() => handleHistoryClick(entry.input)}
+                >
+                  <AiOutlineRollback/>
+                </button>
+                <button
+                  className="p-1 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  onClick={() => deleteHistory(entry._id)}
+                >
+                  <AiOutlineDelete/>
+                </button>
+              </div>
             </div>
           ))}
         </ul>
