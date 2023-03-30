@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Decimal from 'decimal.js';
 
-const Calculator = () => {
+const Calculator = ({user}) => {
   const [input, setInput] = useState('0');
   const [memory, setMemory] = useState(0);
   const [history, setHistory] = useState([]);
@@ -10,6 +10,27 @@ const Calculator = () => {
   const operations = ['+', '-', '×', '÷'];
   const advancedOperations = ['%', '√', '^', 'mod'];
 
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchHistory = async () => {
+      try {
+        const response = await fetch('/api/history', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'userId': user._id,
+          },
+        });
+        const data = await response.json();
+        setHistory(data.history);
+      } catch (error) {
+        console.error('Error fetching history:', error.message);
+      }
+    };
+
+    fetchHistory();
+  }, []);
   const handleInput = (value) => {
     // Check if the last character in the input is an operator or an advanced operator
     const lastChar = input[input.length - 1];
@@ -40,7 +61,7 @@ const Calculator = () => {
     // Replace the last operator with the new one
     if (input === '0' && !isValueOperator) {
       setInput(value);
-    } else if (value === '√' || value === '%') {
+    } else if (input === '0' && (value === '√' || value === '%')) {
       setInput(value);
     } else {
       setInput(input + value);
@@ -51,7 +72,28 @@ const Calculator = () => {
     setInput(expression);
   };
 
-  const calculateResult = () => {
+  const deleteHistory = async (id) => {
+    try {
+      const response = await fetch('/api/history', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({id}),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete history item');
+      }
+
+      // Update history state by removing the deleted item
+      setHistory(history.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error('Error deleting history item:', error.message);
+    }
+  };
+
+
+  const calculateResult = async () => {
     try {
       // Replace symbols with Decimal.js compatible operators
       const expression = input
@@ -63,8 +105,33 @@ const Calculator = () => {
       setInput(result.toString());
 
       // Save to history
-      setHistory([...history, {input: input, result: result.toString()}]);
+      const historyEntry = {
+        _id: null,
+        input: input,
+        result: result.toString(),
+      };
+      setHistory([...history, historyEntry]);
 
+      if (!user) return;
+
+      // Save to database in the background
+      await (async () => {
+        const response = await fetch('/api/history', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({input: input, result: result.toString()}),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          historyEntry._id = data.id;
+        } else {
+          alert('Failed to save history entry in the database');
+        }
+        setHistory([...history, historyEntry]);
+      })();
     } catch (error) {
       setInput('Error');
     }
@@ -240,7 +307,8 @@ const Calculator = () => {
           <div className="text-sm font-bold">{memory}</div>
         </div>
       </div>
-      <div className="calculator bg-gray-100 p-4 rounded-lg shadow-md w-full">
+      <div
+        className="calculator min-w-fit	bg-gray-100 p-4 rounded-lg shadow-md w-full ">
         <div className="display mb-4">
           <input
             type="text"
@@ -361,14 +429,17 @@ const Calculator = () => {
         <ul
           className="bg-white p-2 rounded-lg shadow-md divide-y divide-gray-300">
           {history.map((entry, index) => (
-            <li
-              key={index}
-              className="p-2 cursor-pointer hover:bg-gray-100"
-              onClick={() => handleHistoryClick(entry.input)}
-            >
-              <div className="text-sm">{entry.input}</div>
-              <div className="text-sm font-bold">{entry.result}</div>
-            </li>
+            <div className="flex-col justify-end" key={index}>
+              <div
+                key={index}
+                className="p-2 cursor-pointer hover:bg-gray-100"
+                onClick={() => handleHistoryClick(entry.input)}
+              >
+                <div className="text-sm">{entry.input}</div>
+                <div className="text-sm font-bold">={entry.result}</div>
+              </div>
+              <button onClick={() => deleteHistory(entry._id)}>Delete</button>
+            </div>
           ))}
         </ul>
       </div>
