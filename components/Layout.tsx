@@ -33,10 +33,8 @@ const Layout = ({
   }, [router]);
 
   const handleLogin = useCallback(async () => {
-      await fetch('/api/auth/login');
       await router.push('/login');
-    }
-    , [router]);
+    }, [router]);
 
   return (
     <div className="min-h-screen flex flex-col">
