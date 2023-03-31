@@ -28,7 +28,7 @@ const LoginPage = () => {
         setLoading(false);
 
         if (response.ok) {
-            router.push('/');
+            await router.push('/');
         } else {
             const error = await response.json();
             alert(error.message);
