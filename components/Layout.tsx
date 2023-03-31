@@ -31,11 +31,11 @@ const Layout = ({
     document.cookie = 'calculator-x-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   },[router])
 
-  const handleLogout = useCallback(async () => {
+  const handleLogout = async () => {
     await fetch('/api/auth/logout');
-    await deleteCookie();
+    // await deleteCookie();
     router.push('/login');
-  }, [router]);
+  }
 
   const handleLogin = useCallback(async () => {
       await router.push('/login');
