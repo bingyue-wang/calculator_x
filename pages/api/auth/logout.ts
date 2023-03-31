@@ -14,7 +14,7 @@ async function logoutRouteHandler(req: NextApiRequest, res: NextApiResponse): Pr
     // destroy the session on the server
     req.session.destroy();
     // destroy the session on the client
-    res.setHeader('Set-Cookie', 'calculator-x-session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=lax; Secure; HttpOnly');
+    res.setHeader('Set-Cookie', `calculator-x-session=; Domain=calculator-x.vercel.app; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure`);
     res.send({ ok: true, cookieName: 'calculator-x-session' });
 }
 
