@@ -11,7 +11,10 @@ export default withSessionRoute(logoutRouteHandler);
  * @param res {NextApiResponse}
  */
 async function logoutRouteHandler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
+    // destroy the session on the server
     req.session.destroy();
+    // destroy the session on the client
+    res.setHeader('Set-Cookie', 'calculator-x-session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=lax; Secure; HttpOnly');
     res.send({ ok: true, cookieName: 'calculator-x-session' });
 }
 

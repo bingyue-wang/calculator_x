@@ -27,20 +27,9 @@ const Layout = ({
   const bodyClassName = theme === 'light' ? 'bg-blue-100' : 'bg-gray-400';
 
   const handleLogout = useCallback(async () => {
-    const response = await fetch('/api/auth/logout');
-    const responseData = await response.json();
-    console.log(responseData.cookieName);
-    if (responseData.ok) {
-      // Delete the cookie by setting its value to an empty string and max-age to 0
-      document.cookie = `${responseData.cookieName}=; max-age=0; path=/`;
-
-      router.push('/login');
-    } else {
-      console.error('Logout failed:', response);
-    }
+    await fetch('/api/auth/logout');
+    router.push('/login');
   }, [router]);
-
-
 
   const handleLogin = useCallback(async () => {
       await router.push('/login');
