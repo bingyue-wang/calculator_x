@@ -11,10 +11,6 @@ export default withSessionRoute(logoutRouteHandler);
  * @param res {NextApiResponse}
  */
 async function logoutRouteHandler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-    console.log('api, Logging out...');
-    // req.session.destroy();
-    // delete cookie
-    res.setHeader('Set-Cookie', 'calculator-x-session=; Path=/; HttpOnly; Max-Age=0');
-    console.log('api, Logged out successfully!');
+    req.session.destroy();
     res.send({ ok: true });
 }

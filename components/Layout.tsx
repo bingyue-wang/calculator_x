@@ -27,10 +27,13 @@ const Layout = ({
   const bodyClassName = theme === 'light' ? 'bg-blue-100' : 'bg-gray-400';
 
 
+  const deleteCookie = useCallback(async () => {
+    document.cookie = 'calculator-x-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  },[router])
+
   const handleLogout = useCallback(async () => {
-    console.log('ui, Logging out...');
     await fetch('/api/auth/logout');
-    console.log('ui, Logged out successfully!');
+    await deleteCookie();
     router.push('/login');
   }, [router]);
 
