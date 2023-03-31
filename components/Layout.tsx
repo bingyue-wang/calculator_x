@@ -29,7 +29,7 @@ const Layout = ({
 
   const handleLogout = useCallback(async () => {
     await fetch('/api/auth/logout');
-    await router.push('/login');
+    await router.push('/');
   }, [router]);
 
   const handleLogin = useCallback(async () => {
