@@ -34,7 +34,7 @@ const Layout = ({
   const handleLogout = async () => {
     await fetch('/api/auth/logout');
     // await deleteCookie();
-    router.push('/login');
+    // router.push('/login');
   }
 
   const handleLogin = useCallback(async () => {
