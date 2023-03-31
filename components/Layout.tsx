@@ -29,12 +29,12 @@ const Layout = ({
 
   const handleLogout = useCallback(async () => {
     await fetch('/api/auth/logout');
-    router.push('/login');
+    await router.push('/login');
   }, [router]);
 
   const handleLogin = useCallback(async () => {
       await fetch('/api/auth/login');
-      router.push('/login');
+      await router.push('/login');
     }
     , [router]);
 
