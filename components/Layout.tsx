@@ -28,8 +28,10 @@ const Layout = ({
 
 
   const handleLogout = useCallback(async () => {
+    console.log('ui, Logging out...');
     await fetch('/api/auth/logout');
-    await router.push('/');
+    console.log('ui, Logged out successfully!');
+    router.push('/login');
   }, [router]);
 
   const handleLogin = useCallback(async () => {
