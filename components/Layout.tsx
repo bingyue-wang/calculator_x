@@ -26,16 +26,10 @@ const Layout = ({
   const footerClassName = theme === 'light' ? 'bg-blue-500' : 'bg-gray-800';
   const bodyClassName = theme === 'light' ? 'bg-blue-100' : 'bg-gray-400';
 
-
-  const deleteCookie = useCallback(async () => {
-    document.cookie = 'calculator-x-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  },[router])
-
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await fetch('/api/auth/logout');
-    // await deleteCookie();
-    // router.push('/login');
-  }
+    router.push('/login');
+  }, [router]);
 
   const handleLogin = useCallback(async () => {
       await router.push('/login');
