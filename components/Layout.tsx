@@ -27,9 +27,14 @@ const Layout = ({
   const bodyClassName = theme === 'light' ? 'bg-blue-100' : 'bg-gray-400';
 
   const handleLogout = useCallback(async () => {
-    await fetch('/api/auth/logout');
-    router.push('/login');
+    const response = await fetch('/api/auth/logout');
+    if (response.ok) {
+      router.push('/login');
+    } else {
+      console.error('Logout failed:', response);
+    }
   }, [router]);
+
 
   const handleLogin = useCallback(async () => {
       await router.push('/login');

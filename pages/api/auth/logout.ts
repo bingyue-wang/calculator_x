@@ -12,5 +12,6 @@ export default withSessionRoute(logoutRouteHandler);
  */
 async function logoutRouteHandler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     req.session.destroy();
-    res.send({ ok: true });
+    res.status(200).send({ ok: true });
 }
+
