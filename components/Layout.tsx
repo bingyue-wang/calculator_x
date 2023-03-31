@@ -28,12 +28,18 @@ const Layout = ({
 
   const handleLogout = useCallback(async () => {
     const response = await fetch('/api/auth/logout');
-    if (response.ok) {
+    const responseData = await response.json();
+    console.log(responseData.cookieName);
+    if (responseData.ok) {
+      // Delete the cookie by setting its value to an empty string and max-age to 0
+      document.cookie = `${responseData.cookieName}=; max-age=0; path=/`;
+
       router.push('/login');
     } else {
       console.error('Logout failed:', response);
     }
   }, [router]);
+
 
 
   const handleLogin = useCallback(async () => {
